@@ -1,0 +1,17 @@
+{
+  "ver": "1.0.22",
+  "uuid": "28bc497b-4b60-48b1-a435-8ed32cef6a25",
+  "compiledShaders": [
+    {
+      "glsl1": {
+        "vert": "\nprecision highp float;\nuniform mat4 cc_matViewProj;\n\nattribute vec3 a_position;\n\nuniform vec4 u_color;\nvarying vec4 v_color;\n\nvoid main () {\n    v_color = u_color;\n    gl_Position = cc_matViewProj * vec4(a_position, 1.0);\n}\n",
+        "frag": "\nprecision highp float;\n\n#if USE_ALPHA_TEST\n  \n  uniform float alphaThreshold;\n#endif\n\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\n\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\n\nuniform sampler2D texture;\n\nvarying vec4 v_color;\n\nvoid main () {\n    gl_FragColor = v_color;\n}\n"
+      },
+      "glsl3": {
+        "vert": "\nprecision highp float;\nuniform CCGlobal {\n  vec4 cc_time;\n\n  vec4 cc_screenSize;\n\n  vec4 cc_screenScale;\n\n  vec4 cc_nativeSize;\n\n  mat4 cc_matView;\n  mat4 cc_matViewInv;\n  mat4 cc_matProj;\n  mat4 cc_matProjInv;\n  mat4 cc_matViewProj;\n  mat4 cc_matViewProjInv;\n  vec4 cc_cameraPos;\n\n  vec4 cc_exposure;\n\n  vec4 cc_mainLitDir;\n\n  vec4 cc_mainLitColor;\n\n  vec4 cc_ambientSky;\n  vec4 cc_ambientGround;\n};\nuniform CCLocal {\n  mat4 cc_matWorld;\n  mat4 cc_matWorldIT;\n};\n\nin vec3 a_position;\n\nuniform m_property {\n    vec4 u_color;\n}\n\nout vec4 v_color;\n\nvoid main () {\n    v_color = u_color;\n    gl_Position = cc_matViewProj * vec4(a_position, 1.0);\n}\n",
+        "frag": "\nprecision highp float;\n\n#if USE_ALPHA_TEST\n  \n  uniform ALPHA_TEST {\n    float alphaThreshold;\n  }\n#endif\n\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\n\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\n\nuniform sampler2D texture;\n\nin vec4 v_color;\n\nvoid main () {\n    gl_FragColor = v_color;\n}\n"
+      }
+    }
+  ],
+  "subMetas": {}
+}

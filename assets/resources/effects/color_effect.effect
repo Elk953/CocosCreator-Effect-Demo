@@ -1,0 +1,50 @@
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: vs
+      frag: fs
+      blendState:
+        targets:
+        - blend: true
+      rasterizerState:
+        cullMode: none
+      properties:
+        texture: { value: white }
+        u_color: { value: [0.0, 0.0, 0.0, 1.0]}
+}%
+
+
+CCProgram vs %{
+    precision highp float;
+
+    #include <cc-global>
+    #include <cc-local>
+
+    in vec3 a_position;
+
+    uniform m_property {
+        vec4 u_color;
+    }
+
+    out vec4 v_color;
+
+    void main () {
+        v_color = u_color;
+        gl_Position = cc_matViewProj * vec4(a_position, 1.0);
+    }
+}%
+
+
+CCProgram fs %{
+    precision highp float;
+
+    #include <alpha-test>
+
+    uniform sampler2D texture;
+
+    in vec4 v_color;
+
+    void main () {
+        gl_FragColor = v_color;
+    }
+}%
